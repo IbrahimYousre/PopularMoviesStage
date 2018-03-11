@@ -8,7 +8,6 @@ import android.provider.BaseColumns;
 /**
  * Created by ibrahim on 3/11/18.
  */
-
 public final class MoviesDbContract {
 
     public static final String AUTHORITY = "com.example.ibrahim.popularmoviesstage2";
@@ -33,6 +32,7 @@ public final class MoviesDbContract {
         public static final String COLUMN_DURATION = "duration";
         public static final String COLUMN_RATING = "rating";
         public static final String COLUMN_STORY = "story";
+        public static final String COLUMN_ADDITION_TIMESTAMP = "add_fav_timestamp";
 
         public static final String CONTENT_DIR_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + AUTHORITY + "/" + TABLE_NAME;
