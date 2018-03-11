@@ -3,6 +3,7 @@ package com.example.ibrahim.popularmoviesstage2.api;
 import android.support.annotation.NonNull;
 
 import com.example.ibrahim.popularmoviesstage2.BuildConfig;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.io.IOException;
 
@@ -43,7 +44,7 @@ public class MovieDbApiClientSingleton {
                             Request request = requestBuilder.build();
                             return chain.proceed(request);
                         }
-                    });
+                    }).addInterceptor(new StethoInterceptor());
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(API_BASE_URL)
