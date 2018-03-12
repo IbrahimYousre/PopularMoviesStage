@@ -53,6 +53,10 @@ public class Movie implements Serializable, Parcelable {
     @SerializedName("release_date")
     @Expose
     public String releaseDate;
+    @SerializedName("duration")
+    @Expose
+    public String duration;
+
     public final static Parcelable.Creator<Movie> CREATOR = new Creator<Movie>() {
 
 
@@ -68,6 +72,7 @@ public class Movie implements Serializable, Parcelable {
         }
 
     };
+
     private final static long serialVersionUID = -2692851914400425098L;
 
     protected Movie(Parcel in) {

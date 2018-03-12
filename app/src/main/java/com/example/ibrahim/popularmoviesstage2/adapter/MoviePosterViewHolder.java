@@ -37,7 +37,7 @@ public class MoviePosterViewHolder extends RecyclerView.ViewHolder {
                 .load(MovieDbImagesHelper.getPosterUrl(movie.posterPath))
                 .placeholder(R.drawable.placeholder)
                 .into(posterImageView);
-        ratingTextView.setText(String.format(Locale.US, "%.2f", movie.voteAverage));
+        ratingTextView.setText(String.format(Locale.US, "%.1f", movie.voteAverage));
         itemView.setTag(movie);
     }
 }
