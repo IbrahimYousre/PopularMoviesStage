@@ -1,5 +1,6 @@
 package com.example.ibrahim.popularmoviesstage2;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -11,7 +12,9 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.ibrahim.popularmoviesstage2.adapter.MovieListAdapter;
 import com.example.ibrahim.popularmoviesstage2.data.model.Movie;
@@ -25,6 +28,9 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
     MovieListAdapter favAdapter;
     MovieListAdapter popularAdapter;
     MovieListAdapter topRatedAdapter;
+    TextView emptyView;
+    ProgressBar progressBar;
+    MovieListAdapter currentAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         recyclerView = findViewById(R.id.recyclerView);
+        emptyView = findViewById(R.id.emptyView);
+        progressBar = findViewById(R.id.progressBar);
 
         favAdapter = new MovieListAdapter(this, null);
         popularAdapter = new MovieListAdapter(this, null);
@@ -50,31 +58,13 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
             public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_popular:
-                        recyclerView.setAdapter(popularAdapter);
-                        viewModel.fetchPopularMovies().observe(MainActivity.this, new Observer<List<Movie>>() {
-                            @Override
-                            public void onChanged(@Nullable List<Movie> list) {
-                                popularAdapter.swapList(list);
-                            }
-                        });
+                        loadLiveDataIntoAdapter(viewModel.fetchPopularMovies(), popularAdapter);
                         return true;
                     case R.id.navigation_top_rated:
-                        recyclerView.setAdapter(topRatedAdapter);
-                        viewModel.fetchTopRatedMovies().observe(MainActivity.this, new Observer<List<Movie>>() {
-                            @Override
-                            public void onChanged(@Nullable List<Movie> list) {
-                                topRatedAdapter.swapList(list);
-                            }
-                        });
+                        loadLiveDataIntoAdapter(viewModel.fetchTopRatedMovies(), topRatedAdapter);
                         return true;
                     case R.id.navigation_fav:
-                        recyclerView.setAdapter(favAdapter);
-                        viewModel.fetchFavoriteMovies().observe(MainActivity.this, new Observer<List<Movie>>() {
-                            @Override
-                            public void onChanged(@Nullable List<Movie> list) {
-                                favAdapter.swapList(list);
-                            }
-                        });
+                        loadLiveDataIntoAdapter(viewModel.fetchFavoriteMovies(), favAdapter);
                         return true;
                 }
                 return false;
@@ -83,7 +73,33 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         bottomNavigationView.setSelectedItemId(R.id.navigation_popular);
     }
 
-    Toast toast;
+    void loadLiveDataIntoAdapter(LiveData<List<Movie>> liveData, final MovieListAdapter adapter) {
+        recyclerView.setAdapter(adapter);
+        currentAdapter = adapter;
+        updateLoadingAndEmptyState(adapter);
+        liveData.observe(MainActivity.this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(@Nullable List<Movie> list) {
+                adapter.swapList(list);
+                if (currentAdapter == adapter) {
+                    updateLoadingAndEmptyState(adapter);
+                }
+            }
+        });
+    }
+
+    void updateLoadingAndEmptyState(MovieListAdapter adapter) {
+        if (adapter.isNullList()) {
+            progressBar.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+        } else if (adapter.getItemCount() == 0) {
+            progressBar.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.GONE);
+            emptyView.setVisibility(View.GONE);
+        }
+    }
 
     @Override
     public void onClick(Movie movie) {

@@ -48,4 +48,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MoviePosterViewHolder
         mList = list;
         notifyDataSetChanged();
     }
+
+    public boolean isNullList() {
+        return mList == null;
+    }
 }

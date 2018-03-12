@@ -10,4 +10,5 @@
     <string name="rating">Rating</string>
     <string name="of_ten">/10</string>
     <string name="story">Story</string>
+    <string name="empty_list_message">Your favorite list is empty</string>
 </resources>
