@@ -44,7 +44,7 @@ public class MovieDbApiClientSingleton {
                             Request request = requestBuilder.build();
                             return chain.proceed(request);
                         }
-                    }).addInterceptor(new StethoInterceptor());
+                    });
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(API_BASE_URL)
