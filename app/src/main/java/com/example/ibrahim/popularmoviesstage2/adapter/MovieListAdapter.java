@@ -8,20 +8,23 @@ import android.view.ViewGroup;
 import com.example.ibrahim.popularmoviesstage2.R;
 import com.example.ibrahim.popularmoviesstage2.data.model.Movie;
 
+import java.util.List;
+
 /**
  * Created by ibrahim on 3/12/18.
  */
 
-public abstract class MovieListAdapter extends RecyclerView.Adapter<MoviePosterViewHolder> {
-
+public class MovieListAdapter extends RecyclerView.Adapter<MoviePosterViewHolder> {
     MovieSelected mCallback;
+    List<Movie> mList;
 
     public interface MovieSelected {
         void onClick(Movie movie);
     }
 
-    public MovieListAdapter(MovieSelected callback) {
-        this.mCallback = callback;
+    public MovieListAdapter(MovieSelected callback, List<Movie> list) {
+        mCallback = callback;
+        mList = list;
     }
 
     @Override
@@ -33,11 +36,16 @@ public abstract class MovieListAdapter extends RecyclerView.Adapter<MoviePosterV
 
     @Override
     public void onBindViewHolder(MoviePosterViewHolder holder, int position) {
-        holder.bindViewHolder(getMovie(position));
+        holder.bindViewHolder(mList.get(position));
     }
 
-    abstract protected Movie getMovie(int position);
-
     @Override
-    abstract public int getItemCount();
+    public int getItemCount() {
+        return mList == null ? 0 : mList.size();
+    }
+
+    public void swapList(List<Movie> list) {
+        mList = list;
+        notifyDataSetChanged();
+    }
 }

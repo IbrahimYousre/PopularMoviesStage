@@ -15,6 +15,7 @@ import com.example.ibrahim.popularmoviesstage2.data.model.Movie;
 import com.example.ibrahim.popularmoviesstage2.data.model.ResponsePage;
 import com.example.ibrahim.popularmoviesstage2.data.persistence.MoviesDbContract;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -29,13 +30,13 @@ public class MainViewModel extends AndroidViewModel {
 
     MutableLiveData<List<Movie>> livePopularMoviesList;
     MutableLiveData<List<Movie>> liveTopRatedMoviesList;
-    MutableLiveData<Cursor> liveCursor;
+    MutableLiveData<List<Movie>> liveFavoriteMoviesList;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
         livePopularMoviesList = new MutableLiveData<>();
         liveTopRatedMoviesList = new MutableLiveData<>();
-        liveCursor = new MutableLiveData<>();
+        liveFavoriteMoviesList = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<Movie>> getLivePopularMoviesList() {
@@ -46,8 +47,8 @@ public class MainViewModel extends AndroidViewModel {
         return liveTopRatedMoviesList;
     }
 
-    public MutableLiveData<Cursor> getLiveCursor() {
-        return liveCursor;
+    public MutableLiveData<List<Movie>> getLiveFavoriteMoviesList() {
+        return liveFavoriteMoviesList;
     }
 
     public LiveData<List<Movie>> fetchPopularMovies() {
@@ -82,33 +83,54 @@ public class MainViewModel extends AndroidViewModel {
         return liveTopRatedMoviesList;
     }
 
-    public LiveData<Cursor> fetchFavoriteMovies() {
-        new LoadFavoriteMoviesTask(this.getApplication().getContentResolver(), liveCursor).execute();
-        return liveCursor;
+    public LiveData<List<Movie>> fetchFavoriteMovies() {
+        new LoadFavoriteMoviesTask(this.getApplication().getContentResolver(), liveFavoriteMoviesList).execute();
+        return liveFavoriteMoviesList;
     }
 
-    static class LoadFavoriteMoviesTask extends AsyncTask<Void, Void, Cursor> {
+    static class LoadFavoriteMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
         @SuppressLint("StaticFieldLeak")
         ContentResolver mResolver;
-        MutableLiveData<Cursor> mLiveCursor;
+        MutableLiveData<List<Movie>> mLiveList;
 
-        LoadFavoriteMoviesTask(ContentResolver resolver, MutableLiveData<Cursor> liveCursor) {
+        LoadFavoriteMoviesTask(ContentResolver resolver, MutableLiveData<List<Movie>> liveCursor) {
             mResolver = resolver;
-            mLiveCursor = liveCursor;
+            mLiveList = liveCursor;
         }
 
         @Override
-        protected Cursor doInBackground(Void... voids) {
-            return mResolver.query(
+        protected List<Movie> doInBackground(Void... voids) {
+            Cursor cursor = mResolver.query(
                     MoviesDbContract.FavoriteMoviesTable.CONTENT_URI,
-                    null, null, null, null
-            );
+                    null, null, null, null);
+            if (cursor == null) return null;
+            List<Movie> list = new ArrayList<>(cursor.getCount());
+            while (cursor.moveToNext()) {
+                Movie movie = new Movie();
+                movie.id = cursor.getLong(
+                        cursor.getColumnIndex(MoviesDbContract.FavoriteMoviesTable._ID));
+                movie.posterPath = cursor.getString(
+                        cursor.getColumnIndex(MoviesDbContract.FavoriteMoviesTable.COLUMN_POSTER_PATH));
+                movie.backdropPath = cursor.getString(
+                        cursor.getColumnIndex(MoviesDbContract.FavoriteMoviesTable.COLUMN_BACKDROP_PATH));
+                movie.releaseDate = cursor.getString
+                        (cursor.getColumnIndex(MoviesDbContract.FavoriteMoviesTable.COLUMN_RELEASE_YEAR));
+                movie.duration = cursor.getString(
+                        cursor.getColumnIndex(MoviesDbContract.FavoriteMoviesTable.COLUMN_DURATION));
+                movie.voteAverage = Float.parseFloat(cursor.getString(
+                        cursor.getColumnIndex(MoviesDbContract.FavoriteMoviesTable.COLUMN_RATING)));
+                movie.overview = cursor.getString(
+                        cursor.getColumnIndex(MoviesDbContract.FavoriteMoviesTable.COLUMN_STORY));
+                list.add(movie);
+            }
+            cursor.close();
+            return list;
         }
 
         @Override
-        protected void onPostExecute(Cursor cursor) {
-            super.onPostExecute(cursor);
-            mLiveCursor.postValue(cursor);
+        protected void onPostExecute(List<Movie> list) {
+            super.onPostExecute(list);
+            mLiveList.setValue(list);
         }
     }
 }
