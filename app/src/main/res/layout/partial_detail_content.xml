@@ -8,8 +8,8 @@
     tools:context=".DetailActivity"
     tools:showIn="@layout/activity_detail">
 
-    <ImageButton
-        android:id="@+id/imageButton"
+    <ImageView
+        android:id="@+id/posterImageView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -35,17 +35,32 @@
         app:layout_constraintGuide_percent="0.45" />
 
     <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:textAppearance="@style/AppTheme.ActionBarStyle.TitleTextStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/posterImageView"
+        tools:text="Zootopia"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp" />
+
+    <TextView
         android:id="@+id/releaseLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif-smallcaps"
         android:text="@string/release"
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="@+id/imageButton" />
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        android:layout_marginLeft="16dp" />
 
     <TextView
         android:id="@+id/releaseTextView"
@@ -115,7 +130,7 @@
         app:layout_constraintStart_toEndOf="@+id/ratingTextView" />
 
     <RatingBar
-        android:id="@+id/ratingBar2"
+        android:id="@+id/ratingBar"
         style="@style/Widget.AppCompat.RatingBar.Indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -138,7 +153,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="imageButton,ratingBar2" />
+        app:constraint_referenced_ids="posterImageView,ratingBar" />
 
     <TextView
         android:id="@+id/storyLabel"
@@ -148,7 +163,7 @@
         android:fontFamily="sans-serif-smallcaps"
         android:text="@string/story"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/imageButton"
+        app:layout_constraintStart_toStartOf="@+id/posterImageView"
         app:layout_constraintTop_toTopOf="@+id/barrier2" />
 
     <TextView
