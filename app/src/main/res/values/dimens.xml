@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="round_stroke_horizontal_padding">15dp</dimen>
     <dimen name="round_stroke_vertical_padding">5dp</dimen>
+
+    <integer name="num_columns">2</integer>
 </resources>
