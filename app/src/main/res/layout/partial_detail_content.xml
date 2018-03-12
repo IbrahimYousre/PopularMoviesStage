@@ -81,6 +81,7 @@
         android:fontFamily="sans-serif-smallcaps"
         android:text="@string/duration"
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/releaseLabel"
         app:layout_constraintTop_toBottomOf="@+id/releaseLabel" />
 
@@ -91,6 +92,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:visibility="gone"
         app:layout_constraintBaseline_toBaselineOf="@+id/durationLabel"
         app:layout_constraintStart_toEndOf="@+id/barrier"
         tools:text="105 min" />
