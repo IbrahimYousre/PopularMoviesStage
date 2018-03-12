@@ -2,7 +2,9 @@ package com.example.ibrahim.popularmoviesstage2;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -85,8 +87,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
 
     @Override
     public void onClick(Movie movie) {
-        if (toast != null) toast.cancel();
-        toast = Toast.makeText(this, movie.title + " was selected", Toast.LENGTH_SHORT);
-        toast.show();
+        startActivity(new Intent(this, DetailActivity.class)
+                .putExtra(DetailActivity.MOVIE_EXTRA, (Parcelable) movie));
     }
 }
