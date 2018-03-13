@@ -7,6 +7,11 @@ This application is part of my Android Developer Nanodegree.
 - Stetho: for debugging
 - Picasso: for image loading
 
+# Screenshots
+![](https://raw.githubusercontent.com/IbrahimYousre/PopularMoviesStage2/master/showcase/yousre's%20movies%20stage2.gif) | ![](https://raw.githubusercontent.com/IbrahimYousre/PopularMoviesStage2/master/showcase/Screenshot_1520912157.png) | ![](https://raw.githubusercontent.com/IbrahimYousre/PopularMoviesStage2/master/showcase/Screenshot_1520912176.png) | 
+:-------------------------:|:-------------------------:|:-------------------------:
+![](https://raw.githubusercontent.com/IbrahimYousre/PopularMoviesStage2/master/showcase/Screenshot_1520912198.png) | ![](https://raw.githubusercontent.com/IbrahimYousre/PopularMoviesStage2/master/showcase/Screenshot_1520912214.png) | ![](https://raw.githubusercontent.com/IbrahimYousre/PopularMoviesStage2/master/showcase/Screenshot_1520912273.png)
+
 ## Instructions
 To build this project follow add your moviesdb.org API KEY to `gradle.properties` as illustrated below
 ```
