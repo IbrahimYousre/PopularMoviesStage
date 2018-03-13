@@ -51,6 +51,12 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         setUpBottomNavigation();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (currentAdapter == favAdapter) viewModel.fetchFavoriteMovies();
+    }
+
     private void setUpBottomNavigation() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
