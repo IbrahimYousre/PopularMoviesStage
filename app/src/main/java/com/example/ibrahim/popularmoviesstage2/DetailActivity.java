@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -86,10 +88,13 @@ public class DetailActivity extends AppCompatActivity
                         new ReviewListAdapter(reviewList));
             }
         });
-
-        isFavorite = getContentResolver().query(
+        Cursor cursor = getContentResolver().query(
                 MoviesDbContract.FavoriteMoviesTable.buildUriWithApiId(movie.id),
-                null, null, null, null) != null;
+                null, null, null, null);
+        isFavorite = cursor != null && cursor.getCount() > 0;
+        if (cursor != null) {
+            cursor.close();
+        }
         syncFabImage();
     }
 
