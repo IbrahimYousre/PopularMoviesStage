@@ -21,5 +21,5 @@ public interface MovieDbApiClient {
     Call<ResponsePage> getTopRatedMovies();
 
     @GET("movie/{id}?append_to_response=videos%2Creviews")
-    Call<ResponseBody> getMovieDetails(@Path("id") int movieId);
+    Call<ResponseBody> getMovieDetails(@Path("id") long movieId);
 }
