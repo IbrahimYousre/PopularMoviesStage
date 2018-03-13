@@ -21,7 +21,6 @@
         android:background="@color/primary_light"
         android:contentDescription="@string/poster_content_description"
         android:scaleType="centerCrop"
-        android:src="@drawable/poster"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

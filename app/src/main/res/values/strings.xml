@@ -11,4 +11,8 @@
     <string name="of_ten">/10</string>
     <string name="story">Story</string>
     <string name="empty_list_message">Your favorite list is empty</string>
+    <string name="trailers">Trailers</string>
+    <string name="reviews">Reviews</string>
+    <string name="trailer_thumbnail_content_description">Trailer Thumbnail</string>
+    <string name="name">Name:</string>
 </resources>
