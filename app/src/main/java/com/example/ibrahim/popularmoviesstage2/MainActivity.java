@@ -10,7 +10,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -22,6 +24,8 @@ import com.example.ibrahim.popularmoviesstage2.data.model.Movie;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieListAdapter.MovieSelected {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     MainViewModel viewModel;
     RecyclerView recyclerView;
@@ -47,6 +51,42 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         popularAdapter = new MovieListAdapter(this, null);
         topRatedAdapter = new MovieListAdapter(this, null);
 
+        final GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            boolean isLoading = false;
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int totalItemCount = layoutManager.getItemCount();
+                int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+
+                if (lastVisibleItemPosition + 10 > totalItemCount && !isLoading) {
+                    Log.d(TAG, "Load next page");
+                    if (currentAdapter == popularAdapter) {
+                        viewModel.fetchPopularMovies().observe(MainActivity.this, new Observer<List<Movie>>() {
+                            @Override
+                            public void onChanged(@Nullable List<Movie> list) {
+                                isLoading = false;
+                            }
+                        });
+                    } else if (currentAdapter == topRatedAdapter) {
+                        viewModel.fetchTopRatedMovies().observe(MainActivity.this, new Observer<List<Movie>>() {
+                            @Override
+                            public void onChanged(@Nullable List<Movie> list) {
+                                isLoading = false;
+                            }
+                        });
+                    }
+                    isLoading = true;
+                }
+            }
+        });
 
         setUpBottomNavigation();
     }

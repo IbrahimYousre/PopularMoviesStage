@@ -8,9 +8,9 @@ This application is part of my Android Developer Nanodegree.
 - Picasso: for image loading
 
 ## Features
-- The favorite list is available offline
-- Endless scrolling (not yet implemented)
-- Offline access to popular and top rated movies list (not yet implemented)
+- [X] The favorite list is available offline
+- [X] Endless scrolling
+- [ ] Offline access to popular and top rated movies list (not yet implemented)
 
 ## Instructions
 To build this project follow add your moviesdb.org API KEY to `gradle.properties` as illustrated below

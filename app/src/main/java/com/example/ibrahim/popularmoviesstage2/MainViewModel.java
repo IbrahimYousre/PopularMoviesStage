@@ -32,6 +32,9 @@ public class MainViewModel extends AndroidViewModel {
     MutableLiveData<List<Movie>> liveTopRatedMoviesList;
     MutableLiveData<List<Movie>> liveFavoriteMoviesList;
 
+    int popularNextPage = 1;
+    int topRatedNextPage = 1;
+
     public MainViewModel(@NonNull Application application) {
         super(application);
         livePopularMoviesList = new MutableLiveData<>();
@@ -51,12 +54,23 @@ public class MainViewModel extends AndroidViewModel {
         return liveFavoriteMoviesList;
     }
 
+    void appendList(MutableLiveData<List<Movie>> liveList, List<Movie> fetchedList) {
+        List<Movie> curList = liveList.getValue();
+        if (curList == null)
+            liveList.setValue(fetchedList);
+        else {
+            //fetchedList.removeAll(curList);
+            curList.addAll(fetchedList);
+            liveList.setValue(curList);
+        }
+    }
+
     public LiveData<List<Movie>> fetchPopularMovies() {
         MovieDbApiClientSingleton.getApiClient()
-                .getPopularMovies().enqueue(new Callback<ResponsePage>() {
+                .getPopularMovies(popularNextPage++).enqueue(new Callback<ResponsePage>() {
             @Override
             public void onResponse(@NonNull Call<ResponsePage> call, @NonNull Response<ResponsePage> response) {
-                livePopularMoviesList.setValue(response.body().movieList);
+                appendList(livePopularMoviesList, response.body().movieList);
             }
 
             @Override
@@ -69,10 +83,10 @@ public class MainViewModel extends AndroidViewModel {
 
     public LiveData<List<Movie>> fetchTopRatedMovies() {
         MovieDbApiClientSingleton.getApiClient()
-                .getTopRatedMovies().enqueue(new Callback<ResponsePage>() {
+                .getTopRatedMovies(topRatedNextPage++).enqueue(new Callback<ResponsePage>() {
             @Override
             public void onResponse(@NonNull Call<ResponsePage> call, @NonNull Response<ResponsePage> response) {
-                liveTopRatedMoviesList.setValue(response.body().movieList);
+                appendList(liveTopRatedMoviesList, response.body().movieList);
             }
 
             @Override
