@@ -23,7 +23,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/trailersRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:clipToPadding="false"
         android:orientation="horizontal"
