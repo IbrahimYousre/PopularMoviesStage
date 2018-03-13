@@ -12,4 +12,8 @@ public class MovieDbImagesHelper {
     public static String getPosterUrl(String path) {
         return "http://image.tmdb.org/t/p/w185/" + path;
     }
+
+    public static String getTrailerThumbnail(String key) {
+        return "https://img.youtube.com/vi/" + key + "/0.jpg";
+    }
 }
